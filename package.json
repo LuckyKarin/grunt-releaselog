@@ -1,0 +1,35 @@
+{
+  "name": "grunt-releaselog",
+  "description": "generate the release log",
+  "version": "0.1.1",
+  "homepage": "https://github.com/LuckyKarin/grunt-releaselog",
+  "author": "yikuang <kuangyi0601@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LuckyKarin/grunt-releaselog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LuckyKarin/grunt-releaselog/issues"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt": "~0.4.5"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "license": "ISC"
+}
