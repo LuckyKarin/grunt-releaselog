@@ -39,8 +39,31 @@ module.exports = function(grunt) {
         });
         var self = this;
         var done = this.async();
+        var Util = {
+            //判断是否是空对象
+            isEmptyObject: function(obj) {
+                var name;
+                var toStr = Object.prototype.toString;
+                var objStr = "[object Object]";
+                if(!obj || typeof obj !== 'object' || toStr.call(obj) !== objStr) {
+                    return false;
+                }
+                for ( name in obj ) {
+                    return false;
+                }
+                return true;
+            },
+            //扩展对象
+            extend: function(parent, child) {
+                if(!this.isEmptyObject(child)) {
+                    for(var item in child) {
+                        parent[item] = child[item];
+                    }
+                }
+            }
+        };
 
-        //判断是否需要增加commit注释
+        //判断是否需要增加commit注释,并执行主函数
         if(options.hasCommitLog) {
             getCommit(done, main);
         }else {
@@ -68,15 +91,6 @@ module.exports = function(grunt) {
                 });
                 setReleaseLog(f.dest, releaseLog);
             });
-        }
-
-        //判断是否是空对象
-        function isEmptyObject(obj) {
-            var name;
-            for ( name in obj ) {
-                return false;
-            }
-            return true;
         }
 
         //读取日志对象
@@ -107,6 +121,8 @@ module.exports = function(grunt) {
             var extname = filenameArr[filenameArr.length - 1];
             var key = filename.split(options.separator)[0] + '.' + extname;
             var historyLength;
+            var extraParams = {};
+
             //写入history数据
             if(releaseLogObj[key]) {
                 historyLength = releaseLogObj[key].history ?  releaseLogObj[key].history.length : 0;
@@ -122,20 +138,20 @@ module.exports = function(grunt) {
                     'history': [log]
                 };
             }
-            //写入其它参数
-            if(!isEmptyObject(options.params)) {
-                for(var prop in options.params) {
-                    releaseLogObj[key][prop] = options.params[prop];
-                }
-            }
-            //通过process方法处理releaseLogObj对象
+
+            //写入其它配置参数
+            Util.extend(releaseLogObj[key], options.params);
+
+            //通过process方法写入其它动态参数
             if(typeof options.process === 'function') {
-                options.process(releaseLogObj, key);
+                extraParams = options.process(key);
+                Util.extend(releaseLogObj[key], extraParams);
             }else {
                 if(options.process) {
                     grunt.log.error('options.process must be a function; ignoring');
                 }
             }
+
             // Print a success message.
             grunt.log.writeln('relesed log of ' + key);
         }

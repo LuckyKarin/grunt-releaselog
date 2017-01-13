@@ -97,11 +97,15 @@ Default value: `'.'`
 如home.124343.js，则连接符是' . '；
 而home-123456.js，则连接符是' - '。
 
-#### process(releaseLogObj, key)
+#### process(key)
 Type: `function`
 Default value: `null`
+Return: `Object`
 
-参数releaseLogObj表示日志对象，key表示当前文件名，可以通过releaseLogObj[key]取到当前文件的日志内容，并在该方法中对其进行任何处理。
+参数key表示当前正在处理的文件名。
+process函数返回一个对象，该对象中包含需要记录的额外字段信息。最终会将这些信息合并记录到日志内容中相应的文件名下。
+这里的额外参数与通过params对象传入的参数的区别在于，可以针对所有文件分别记录不同的信息，用户可在process函数中动态处理这些信息。
+而通过params传入的参数，则会在所有文件中记录下相同的信息。
 
 ### src
 指定需要记录发布日志的源文件
@@ -160,15 +164,15 @@ grunt.initConfig({
                   mark: 'just test the mark function!'
               },
               hasCommitLog: true,
-              process: function(releaseLogObj, key) {
+              process: function(key) {
                   var fragmentMap = {
                     "common.js": "碎片1",
                     "login.js": "碎片2",
                     "home.js": "碎片3"
                   };
-                  if(fragmentMap[key]) {
-                    releaseLogObj[key]["fragment"] = fragmentMap[key];
-                  }
+                  return {
+                      fragment: fragmentMap[key]
+                  };
               }
           },
           src: "dest/scripts/*.js",
@@ -224,3 +228,4 @@ grunt.initConfig({
 ## Release History
 * v0.1.0  2017.01.05  完成基础功能，可生成指定文件变更的历史记录；
 * v0.1.1  2017.01.12  优化代码，并增加可自定义记录字段和内容、可记录最新commit注释、可传入process函数等功能；
+* v0.1.2  2017.01.13  限制process函数功能，禁止直接操作日志对象，增加返回值；
