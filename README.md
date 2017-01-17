@@ -1,25 +1,25 @@
 # grunt-releaselog
 
-> generate the release log
+> 生成项目文件的发布日志
 
-## Getting Started
-This plugin requires Grunt `~0.4.5`
+## 开始
+该插件依赖于 Grunt `~0.4.5`
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
+如果你从未用过 [Grunt](http://gruntjs.com/) ，请先查阅Grunt的开始指南 [Getting Started](http://gruntjs.com/getting-started)，上面讲解了如何创建一个[Gruntfile](http://gruntjs.com/sample-gruntfile)文件，以及如何安装和使用Grunt插件。当你熟悉了这一步骤之后，你可以通过以下命令安装这个插件：
 
 ```shell
 npm install grunt-releaselog --save-dev
 ```
 
-Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+插件安装完成后，在你的Gruntfile中加入这行JavaScript
 
 ```js
 grunt.loadNpmTasks('grunt-releaselog');
 ```
 
-## The "releaselog" task
+## "releaselog" 任务
 
-### Overview
+### 概述
 该插件的主要目的是生成前端静态资源的发布日志。
 ####开发背景
 前端在发版前，为了避免因缓存导致资源未更新的情况，往往会在文件名后加上一段随机符号（时间戳或hash值等），如home.23ec834dn32k.js这种形式。一般常见的做法是根据文件内容生成一串md5的hash值，这样每次就只有被修改过的文件的文件名会有变化，没有改动的文件还保持原来的文件名。该方式既可以避免缓存导致的问题，又可以充分利用缓存的优势。
@@ -59,8 +59,8 @@ grunt.loadNpmTasks('grunt-releaselog');
 对应的value对象中，history数组即表示文件的历史记录，在每一次文件名发生变更的时候，会记录下当前的时间datetime、当前变更后的文件名filename（带随机字符序列）、项目最新的git commit注释（可选）。
 其它的如baseUrl、mark、fragment等信息属于自定义字段，在使用插件时可根据自身使用场景的需求自定义配置，名称和内容都可以是任意的。
 
-
-In your project's Gruntfile, add a section named `releaselog` to the data object passed into `grunt.initConfig()`.
+### 用法
+在你项目的Gruntfile文件中，在传递给“grunt.initConfig()”方法的对象里，增加一个名叫“releaselog”的模块。
 
 ```js
 grunt.initConfig({
@@ -113,7 +113,7 @@ process函数返回一个对象，该对象中包含需要记录的额外字段�
 ### dest
 指定生成的日志文件的路径和文件名
 
-### Usage Examples
+### 用法举例
 
 #### 基础用法
 默认情况只需指定src和dest，如下：
@@ -225,7 +225,8 @@ grunt.initConfig({
 }
 ```
 
-## Release History
+## 发布历史
 * v0.1.0  2017.01.05  完成基础功能，可生成指定文件变更的历史记录；
 * v0.1.1  2017.01.12  优化代码，并增加可自定义记录字段和内容、可记录最新commit注释、可传入process函数等功能；
 * v0.1.2  2017.01.13  限制process函数功能，禁止直接操作日志对象，增加返回值；
+* v0.1.3  2017.01.17  优化代码和文档；

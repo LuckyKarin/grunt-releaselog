@@ -53,13 +53,105 @@ module.exports = function(grunt) {
                 }
                 return true;
             },
-            //扩展对象
-            extend: function(parent, child) {
-                if(!this.isEmptyObject(child)) {
-                    for(var item in child) {
-                        parent[item] = child[item];
+            //复制对象
+            copy: function(obj, isArray) {
+                var toStr = Object.prototype.toString;
+                var astr = "[object Array]";
+                var resultObj = isArray ? [] : {};
+                if(!this.isEmptyObject(obj)) {
+                    for (var i in obj) {
+                        if (obj.hasOwnProperty(i)) {
+                            if (typeof obj[i] === "object") {
+                                resultObj[i] = this.copy(obj[i], toStr.call(obj[i]) === astr);
+                            } else {
+                                resultObj[i] = obj[i];
+                            }
+                        }
                     }
                 }
+                return resultObj;
+            },
+            //扩展对象
+            extend: function(parent, child) {
+                var resultObj = this.copy(parent);
+                if(!this.isEmptyObject(child)) {
+                    for(var i in child) {
+                        if (child.hasOwnProperty(i)) {
+                            resultObj[i] = child[i];
+                        }
+                    }
+                }
+                return resultObj;
+            }
+        };
+        //对日志文件的操作
+        var LogActions = {
+            //读日志文件
+            readLog: function(file) {
+                var releaseLog = {};
+                if(grunt.file.exists(file)){
+                    releaseLog = grunt.file.readJSON(file);
+                }
+                return releaseLog;
+            },
+            //写日志文件
+            writeLog: function(file, releaseLog) {
+                grunt.file.write(file, JSON.stringify(releaseLog));
+            },
+            //根据文件名和分隔符，生成相应的key值
+            generateKey: function(filename, separator) {
+                var filenameArr = filename.split('.');
+                var extname = filenameArr[filenameArr.length - 1];
+                return filename.split(separator)[0] + '.' + extname;
+            },
+            //通过key值，取到对应文件的日志内容
+            getFileLogByKey: function(releaseLog, key) {
+                if(releaseLog[key]) {
+                    return releaseLog[key];
+                }else {
+                    return {};
+                }
+            },
+            //生成某文件的日志历史记录
+            generateHistoryLog: function(fileLog, filename, comment) {
+                var history = fileLog.history || [];
+                var length = history.length;
+                var log = {
+                    'datetime': grunt.template.today('yyyy-mm-dd HH:MM:ss'),
+                    'filename': filename
+                };
+                if(comment) {
+                    log.comment = comment;
+                }
+                if(length > 0) {
+                    if(history[length - 1].filename !== filename) {
+                        history.push(log);
+                    }
+                }else {
+                    history = [log];
+                }
+                return history;
+            },
+            //生成某文件的日志内容（包含历史记录）
+            generateLog: function(key, history, options) {
+                var fileLog = {
+                    history: history
+                };
+                var extraParams = {};
+                //写入其它配置参数
+                fileLog = Util.extend(fileLog, options.params);
+                //通过process方法写入其它动态参数
+                if(typeof options.process === 'function') {
+                    extraParams = options.process(key);
+                    fileLog = Util.extend(fileLog, extraParams);
+                }else {
+                    if(options.process) {
+                        grunt.log.error('options.process must be a function; ignoring');
+                    }
+                }
+                // Print a success message.
+                grunt.log.writeln('relesed log of ' + key);
+                return fileLog;
             }
         };
 
@@ -72,12 +164,12 @@ module.exports = function(grunt) {
         }
 
         //主函数
-        function main(commit) {
+        function main(comment) {
             //Iterate over all specified file groups.
             self.files.forEach(function(f) {
-                var releaseLog = getReleaseLog(f.dest);
+                var releaseLog = LogActions.readLog(f.dest);
                 // Concat specified files.
-                var src = f.src.filter(function(filepath) {
+                f.src.filter(function(filepath) {
                     // Warn on and remove invalid source files (if nonull was set).
                     if (!grunt.file.exists(filepath)) {
                         grunt.log.warn('Source file "' + filepath + '" not found.');
@@ -87,73 +179,13 @@ module.exports = function(grunt) {
                     }
                 }).map(function(filepath) {
                     var filename = path.basename(filepath);
-                    setLog(releaseLog, filename, commit);
+                    var key = LogActions.generateKey(filename, options.separator);
+                    var fileLog = LogActions.getFileLogByKey(releaseLog, key);
+                    var historyLog = LogActions.generateHistoryLog(fileLog, filename, comment);
+                    releaseLog[key] = LogActions.generateLog(key, historyLog, options);
                 });
-                setReleaseLog(f.dest, releaseLog);
+                LogActions.writeLog(f.dest, releaseLog);
             });
-        }
-
-        //读取日志对象
-        function getReleaseLog(file) {
-            var releaseLogObj = {};
-            if(grunt.file.exists(file)){
-                releaseLogObj = grunt.file.readJSON(file);
-            }
-            return releaseLogObj;
-        }
-
-        //写入日志
-        function setReleaseLog(file, releaseLogObj) {
-            // Write the destination file.
-            grunt.file.write(file, JSON.stringify(releaseLogObj));
-        }
-
-        //写入一条log
-        function setLog(releaseLogObj, filename, comment) {
-            var log = {
-                'datetime': grunt.template.today('yyyy-mm-dd HH:MM:ss'),
-                'filename': filename
-            };
-            if(comment) {
-                log.comment = comment;
-            }
-            var filenameArr = filename.split('.');
-            var extname = filenameArr[filenameArr.length - 1];
-            var key = filename.split(options.separator)[0] + '.' + extname;
-            var historyLength;
-            var extraParams = {};
-
-            //写入history数据
-            if(releaseLogObj[key]) {
-                historyLength = releaseLogObj[key].history ?  releaseLogObj[key].history.length : 0;
-                if(historyLength > 0) {
-                    if(releaseLogObj[key].history[historyLength - 1].filename !== filename) {
-                        releaseLogObj[key].history.push(log);
-                    }
-                }else {
-                    releaseLogObj[key].history = [log];
-                }
-            }else {
-                releaseLogObj[key] = {
-                    'history': [log]
-                };
-            }
-
-            //写入其它配置参数
-            Util.extend(releaseLogObj[key], options.params);
-
-            //通过process方法写入其它动态参数
-            if(typeof options.process === 'function') {
-                extraParams = options.process(key);
-                Util.extend(releaseLogObj[key], extraParams);
-            }else {
-                if(options.process) {
-                    grunt.log.error('options.process must be a function; ignoring');
-                }
-            }
-
-            // Print a success message.
-            grunt.log.writeln('relesed log of ' + key);
         }
 
         //获取最新的commit注释内容
