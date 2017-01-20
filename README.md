@@ -33,10 +33,10 @@ grunt.loadNpmTasks('grunt-releaselog');
          {  
             "datetime":"2017-01-12 18:14:11",
             "filename":"common.60d101b9.js",
-            "comment":"用户中心二期需求"
+            "comment":"增加搜索结果页的翻页功能"
          }
       ],
-      "baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+      "baseUrl":"//domain.com/project/js/v4/",
       "mark":"just test the mark function!",
       "fragment":"碎片1"
    },
@@ -45,10 +45,10 @@ grunt.loadNpmTasks('grunt-releaselog');
          {  
             "datetime":"2017-01-12 18:14:11",
             "filename":"home.b0adcf01.js",
-            "comment":"用户中心二期需求"
+            "comment":"增加搜索结果页的翻页功能"
          }
       ],
-      "baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+      "baseUrl":"//domain.com/project/js/v4/",
       "mark":"just test the mark function!",
       "fragment":"碎片3"
    }
@@ -160,7 +160,7 @@ grunt.initConfig({
       scripts: {
           options: {
               params: {
-                  baseUrl: "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+                  baseUrl: "//domain.com/project/js/v4/",
                   mark: 'just test the mark function!'
               },
               hasCommitLog: true,
@@ -191,10 +191,10 @@ grunt.initConfig({
          {  
             "datetime":"2017-01-12 18:14:11",
             "filename":"common.60d101b9.js",
-            "comment":"用户中心二期需求"
+            "comment":"增加搜索结果页的翻页功能"
          }
       ],
-      "baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+      "baseUrl":"//domain.com/project/js/v4/",
       "mark":"just test the mark function!",
       "fragment":"碎片1"
    },
@@ -203,10 +203,10 @@ grunt.initConfig({
          {  
             "datetime":"2017-01-12 18:14:11",
             "filename":"home.b0adcf01.js",
-            "comment":"用户中心二期需求"
+            "comment":"增加搜索结果页的翻页功能"
          }
       ],
-      "baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+      "baseUrl":"//domain.com/project/js/v4/",
       "mark":"just test the mark function!",
       "fragment":"碎片3"
    },
@@ -215,10 +215,10 @@ grunt.initConfig({
          {  
             "datetime":"2017-01-12 18:14:11",
             "filename":"login.76e682e6.js",
-            "comment":"用户中心二期需求"
+            "comment":"增加搜索结果页的翻页功能"
          }
       ],
-      "baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+      "baseUrl":"//domain.com/project/js/v4/",
       "mark":"just test the mark function!",
       "fragment":"碎片2"
    }
