@@ -56,10 +56,8 @@ module.exports = function(grunt) {
                     }
                 }).map(function(filepath) {
                     var filename = path.basename(filepath);
-                    var key = LogActions.generateKey(filename, options.separator);
-                    var fileLog = LogActions.getFileLogByKey(releaseLog, key);
-                    var historyLog = LogActions.generateHistoryLog(fileLog, filename, comment);
-                    releaseLog[key] = LogActions.generateLog(key, historyLog, options);
+                    var result = LogActions.generateLog(filename, releaseLog, comment, options);
+                    releaseLog[result.key] = result.log;
                 });
                 LogActions.writeLog(f.dest, releaseLog);
             });

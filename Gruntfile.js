@@ -31,6 +31,7 @@ module.exports = function(grunt) {
             baseUrl: "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
             mark: "just test!"
           },
+          hasCommitLog: true,
           process: function(releaseLogObj, key) {
             var fragmentMap = {
               "test-a.js": "碎片a",

@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var path = require('path');
 
 module.exports = function (grunt) {
     //对日志文件的操作
@@ -9,7 +10,12 @@ module.exports = function (grunt) {
         readLog: function(file) {
             var releaseLog = {};
             if(grunt.file.exists(file)){
-                releaseLog = grunt.file.readJSON(file);
+                try {
+                    releaseLog = grunt.file.readJSON(file);
+                } catch (err) {
+                    grunt.log.warn(err);
+                    grunt.log.warn('reset it');
+                }
             }
             return releaseLog;
         },
@@ -19,46 +25,47 @@ module.exports = function (grunt) {
         },
         //根据文件名和分隔符，生成相应的key值
         generateKey: function(filename, separator) {
-            var filenameArr = filename.split('.');
-            var extname = filenameArr[filenameArr.length - 1];
-            return filename.split(separator)[0] + '.' + extname;
+            var extname = path.extname(filename);
+            return filename.split(separator)[0] + extname;
         },
-        //通过key值，取到对应文件的日志内容
-        getFileLogByKey: function(releaseLog, key) {
-            if(releaseLog[key]) {
-                return releaseLog[key];
-            }else {
-                return {};
-            }
-        },
+
         //生成某文件的日志历史记录
-        generateHistoryLog: function(fileLog, filename, comment) {
-            var history = fileLog.history || [];
-            var length = history.length;
-            var log = {
+        updateHistory: function(history, filename, comment) {
+            var newLog = {
                 'datetime': grunt.template.today('yyyy-mm-dd HH:MM:ss'),
                 'filename': filename
             };
-            if(comment) {
-                log.comment = comment;
+            var existed = false;
+
+            history = history || [];
+
+            if (comment) {
+                newLog.comment = comment;
             }
-            if(length > 0) {
-                if(history[length - 1].filename !== filename) {
-                    history.push(log);
+            _.each(history, function(item) {
+                if (item.filename === filename) {
+                    existed = true;
                 }
+            });
+            if (!existed) {
+                history.push(newLog);
             }else {
-                history = [log];
+                history = [newLog];
             }
             return history;
         },
         //生成某文件的日志内容（包含历史记录）
-        generateLog: function(key, history, options) {
+        generateLog: function(filename, releaseLog, comment, options) {
+            var key = this.generateKey(filename, options.separator);
+            var history = releaseLog && releaseLog[key] ? releaseLog[key].history : [];
+            history = this.updateHistory(history, filename, comment);
             var fileLog = {
                 history: history
             };
             var extraParams = {};
             //写入其它配置参数
             fileLog = _.extend(fileLog, options.params);
+
             //通过process方法写入其它动态参数
             if(typeof options.process === 'function') {
                 extraParams = options.process(key);
@@ -70,7 +77,7 @@ module.exports = function (grunt) {
             }
             // Print a success message.
             grunt.log.writeln('relesed log of ' + key);
-            return fileLog;
+            return {key: key, log: fileLog};
         }
     };
 
