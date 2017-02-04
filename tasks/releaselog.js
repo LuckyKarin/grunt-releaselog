@@ -155,14 +155,6 @@ module.exports = function(grunt) {
             }
         };
 
-        //判断是否需要增加commit注释,并执行主函数
-        if(options.hasCommitLog) {
-            getCommit(done, main);
-        }else {
-            main();
-            done(true);
-        }
-
         //主函数
         function main(comment) {
             //Iterate over all specified file groups.
@@ -199,6 +191,14 @@ module.exports = function(grunt) {
                 callback(commit);
                 done(code === 0);
             });
+        }
+
+        //判断是否需要增加commit注释,并执行主函数
+        if(options.hasCommitLog) {
+            getCommit(done, main);
+        }else {
+            main();
+            done(true);
         }
 
     });
