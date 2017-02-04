@@ -1,1 +1,34 @@
-{"test-a.js":{"history":[{"datetime":"2017-01-12 15:20:11","filename":"test-a.js","comment":""}],"baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/","mark":"just test!"},"test-b.js":{"history":[{"datetime":"2017-01-12 15:20:11","filename":"test-b.js","comment":""}],"baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/","mark":"just test!"}}
+{
+    "test-a.js": {
+        "history": [
+            {
+                "datetime": "2017-01-12 15:20:11",
+                "filename": "test-a.js",
+                "comment": ""
+            }
+        ],
+        "baseUrl": "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+        "mark": "just test!"
+    },
+    "test-b.js": {
+        "history": [
+            {
+                "datetime": "2017-01-12 15:20:11",
+                "filename": "test-b.js",
+                "comment": ""
+            }
+        ],
+        "baseUrl": "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+        "mark": "just test!"
+    },
+    "test-c.js": {
+        "history": [
+            {
+                "datetime": "2017-02-04 12:06:26",
+                "filename": "test-c.js"
+            }
+        ],
+        "baseUrl": "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+        "mark": "just test!"
+    }
+}
