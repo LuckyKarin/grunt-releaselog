@@ -1,39 +1,40 @@
 {
-    "test-a.js": {
+    "lib.js": {
         "history": [
             {
-                "datetime": "2017-02-04 17:35:23",
-                "filename": "test-a.js",
-                "comment": "抽出logaction代码"
+                "datetime": "2017-02-06 11:34:35",
+                "filename": "lib.d41d8cd9.js",
+                "comment": "抽出logAction，优化代码\n\n* 抽出logaction代码\r\n\r\n* 重构生成日志逻辑\r\n\r\n* 修改对历史记录的更新条件"
             },
             {
-                "datetime": "2017-02-04 17:35:23",
-                "filename": "test-a.v1.js",
-                "comment": "抽出logaction代码"
+                "datetime": "2017-02-06 11:34:57",
+                "filename": "lib.cb6143ff.js",
+                "comment": "抽出logAction，优化代码\n\n* 抽出logaction代码\r\n\r\n* 重构生成日志逻辑\r\n\r\n* 修改对历史记录的更新条件"
             }
         ],
-        "baseUrl": "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
-        "mark": "just test!"
+        "baseUrl": "//domain.com/h5/ucenter/v4/master/js/",
+        "mark": "test js mark adding!",
+        "fragment": "碎片a"
     },
-    "test-b.js": {
+    "main.js": {
         "history": [
             {
-                "datetime": "2017-02-04 17:35:23",
-                "filename": "test-b.js",
-                "comment": "抽出logaction代码"
-            },
-            {
-                "datetime": "2017-02-04 17:35:23",
-                "filename": "test-b.v1.js",
-                "comment": "抽出logaction代码"
-            },
-            {
-                "datetime": "2017-02-04 17:35:23",
-                "filename": "test-b.v2.js",
-                "comment": "抽出logaction代码"
+                "datetime": "2017-02-06 11:34:35",
+                "filename": "main.d41d8cd9.js",
+                "comment": "抽出logAction，优化代码\n\n* 抽出logaction代码\r\n\r\n* 重构生成日志逻辑\r\n\r\n* 修改对历史记录的更新条件"
             }
         ],
-        "baseUrl": "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
-        "mark": "just test!"
+        "baseUrl": "//domain.com/h5/ucenter/v4/master/js/",
+        "mark": "test js mark adding!",
+        "fragment": "碎片b"
+    },
+    "style.css": {
+        "history": [
+            {
+                "datetime": "2017-02-06 11:34:35",
+                "filename": "style.d41d8cd9.css"
+            }
+        ],
+        "baseUrl": "//domain.com/h5/ucenter/v4/master/css/"
     }
 }
