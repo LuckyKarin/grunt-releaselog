@@ -31,27 +31,25 @@ module.exports = function (grunt) {
 
         //生成某文件的日志历史记录
         updateHistory: function(history, filename, comment) {
+            history = history || [];
+            var length = history.length;
             var newLog = {
                 'datetime': grunt.template.today('yyyy-mm-dd HH:MM:ss'),
                 'filename': filename
             };
-            var existed = false;
-
-            history = history || [];
-
+            
             if (comment) {
                 newLog.comment = comment;
             }
-            _.each(history, function(item) {
-                if (item.filename === filename) {
-                    existed = true;
+            
+            if(length > 0) {
+                if(history[length - 1].filename !== filename) {
+                    history.push(newLog);
                 }
-            });
-            if (!existed) {
-                history.push(newLog);
             }else {
                 history = [newLog];
             }
+            
             return history;
         },
         //生成某文件的日志内容（包含历史记录）
