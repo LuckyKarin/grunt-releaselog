@@ -1,1 +1,39 @@
-{"test-a.js":{"history":[{"datetime":"2017-01-12 15:20:11","filename":"test-a.js","comment":""}],"baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/","mark":"just test!"},"test-b.js":{"history":[{"datetime":"2017-01-12 15:20:11","filename":"test-b.js","comment":""}],"baseUrl":"//s6.rr.itc.cn/h5/ucenter/v4/master/js/","mark":"just test!"}}
+{
+    "test-a.js": {
+        "history": [
+            {
+                "datetime": "2017-02-04 17:35:23",
+                "filename": "test-a.js",
+                "comment": "抽出logaction代码"
+            },
+            {
+                "datetime": "2017-02-04 17:35:23",
+                "filename": "test-a.v1.js",
+                "comment": "抽出logaction代码"
+            }
+        ],
+        "baseUrl": "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+        "mark": "just test!"
+    },
+    "test-b.js": {
+        "history": [
+            {
+                "datetime": "2017-02-04 17:35:23",
+                "filename": "test-b.js",
+                "comment": "抽出logaction代码"
+            },
+            {
+                "datetime": "2017-02-04 17:35:23",
+                "filename": "test-b.v1.js",
+                "comment": "抽出logaction代码"
+            },
+            {
+                "datetime": "2017-02-04 17:35:23",
+                "filename": "test-b.v2.js",
+                "comment": "抽出logaction代码"
+            }
+        ],
+        "baseUrl": "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
+        "mark": "just test!"
+    }
+}

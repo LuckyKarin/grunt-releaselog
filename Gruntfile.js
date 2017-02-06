@@ -15,7 +15,8 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'tasks/*.js'
+        'tasks/*.js',
+        'tasks/lib/*.js'
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -30,6 +31,7 @@ module.exports = function(grunt) {
             baseUrl: "//s6.rr.itc.cn/h5/ucenter/v4/master/js/",
             mark: "just test!"
           },
+          hasCommitLog: true,
           process: function(releaseLogObj, key) {
             var fragmentMap = {
               "test-a.js": "碎片a",
@@ -47,10 +49,8 @@ module.exports = function(grunt) {
 
   });
 
-  // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');
 
-  // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // By default, lint and run all tests.
